@@ -11,14 +11,21 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
-    
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
       with:
-        python-version: ${{ matrix.python-version }}
+        fetch-depth: 0  # Needed for setuptools_scm to get tags
+          
+    - name: Set up Conda
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        activate-environment: hichia-env
+        environment-file: environment.yml
+        python-version: "3.10"
+        auto-activate-base: false
     
     - name: Install package
+      shell: bash -el {0}
       run: pip install .
     
     - name: Verify import
+      shell: bash -el {0}
       run: python -c "import hichiarep; print(hichiarep.__version__)"

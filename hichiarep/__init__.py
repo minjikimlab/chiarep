@@ -3,7 +3,7 @@ try:
     __version__ = version("HiChIA-Rep")
 except Exception:
     __version__ = "unknown"
-
+    
 from .chia_rep import read_data, compare, output_to_csv, preprocess
 # from .chrom_loop_data import *
 # from .genome_loop_data import *
