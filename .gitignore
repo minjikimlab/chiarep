@@ -1,27 +1,24 @@
 *
 
-!chia_rep/
-!misc/
+!hichiarep/
 !example/
-!test/
 !docs/
 
 !docs/**
 
-!test/test_files/
-!test/test_files/*
-!test/*.txt
+!example/
+!example/**
 
-!example/example*.txt
-!example/hg38.chrom.sizes
-
+!.github/
+!.github/**
 !.gitignore
-!.travis.yml
+
 !*.pdf
 !LICENSE
 !MANIFEST.in
 !README.md
-!requirements.txt
+!environment.yml
+
 !*.py
 !*.pyx
 !*.c

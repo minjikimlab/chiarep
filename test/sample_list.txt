@@ -1,3 +1,0 @@
-sampleA1
-sampleA2
-sampleB1

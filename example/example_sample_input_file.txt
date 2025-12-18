@@ -1,8 +1,3 @@
-LHH0048H	data/LHH0048H.for.BROWSER.sorted.bedgraph	data/LHH0048H.for.BROWSER.spp.z6.broadPeak	data/LHH0048H.e500.clusters.cis.BE3
-LHH0054H	data/LHH0054H.for.BROWSER.sorted.bedgraph	data/LHH0054H.for.BROWSER.spp.z6.broadPeak	data/LHH0054H.e500.clusters.cis.BE3
-LHH0084H	data/LHH0084H.for.BROWSER.sorted.bedgraph	data/LHH0084H.for.BROWSER.spp.z6.broadPeak	data/LHH0084H.e500.clusters.cis.BE3
-LHH0086V	data/LHH0086V.for.BROWSER.sorted.bedgraph	data/LHH0086V.for.BROWSER.spp.z6.broadPeak	data/LHH0086V.e500.clusters.cis.BE3
-LHH0061H	data/LHH0061H.for.BROWSER.sorted.bedgraph	data/LHH0061H.for.BROWSER.spp.z6.broadPeak	data/LHH0061H.e500.clusters.cis.BE3
-LHH0058H	data/LHH0058H.for.BROWSER.sorted.bedgraph	data/LHH0058H.for.BROWSER.spp.z6.broadPeak	data/LHH0058H.e500.clusters.cis.BE3
-LHH0085V	data/LHH0085V.for.BROWSER.sorted.bedgraph	data/LHH0085V.for.BROWSER.spp.z6.broadPeak	data/LHH0085V.e500.clusters.cis.BE3
-LHH0083H	data/LHH0083H.for.BROWSER.sorted.bedgraph	data/LHH0083H.for.BROWSER.spp.z6.broadPeak	data/LHH0083H.e500.clusters.cis.BE3
+GM12878_rnapii_chiapet_rep1	/nfs/turbo/umms-minjilab/sionkim/chia_rep_simlinks/GM12878_rnapii_chiapet_rep1_cov_ENCFF621IJG.bedgraph	/nfs/turbo/umms-minjilab/sionkim/chia_rep_simlinks/GM12878_rnapii_chiapet_rep1_contact_ENCFF791SUY.hic
+GM12878_rnapii_chiapet_rep2	/nfs/turbo/umms-minjilab/sionkim/chia_rep_simlinks/GM12878_rnapii_chiapet_rep2_cov_ENCFF607ACO.bedgraph	/nfs/turbo/umms-minjilab/sionkim/chia_rep_simlinks/GM12878_rnapii_chiapet_rep2_contact_ENCFF575CQS.hic
+HEK293T_rnapii_chiapet_rep1	/nfs/turbo/umms-minjilab/sionkim/chia_rep_simlinks/HEK293T_rnapii_chiapet_rep1_cov_ENCFF463PEJ.bedgraph	/nfs/turbo/umms-minjilab/sionkim/chia_rep_simlinks/HEK293T_rnapii_chiapet_rep1_contact_ENCFF750KFK.hic

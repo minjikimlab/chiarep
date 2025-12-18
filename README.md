@@ -1,92 +1,53 @@
-# ChIA-Rep 
-A Python package for assessing the reproducibility of ChIA-PET datasets.    
+# HiChIA-Rep
+A package for quantifying the similarity between chromatin interactions data enriched for protein binding sites or open chromatin regions (e.g. ChIA-PET, HiChIP, ChIATAC, HiCAR and related data).
+
     
 ## Methods Overview 
-### Reading in Data
-**Reading peaks**\
-Read peak interval from peak file and get the peak value from max value within
-the interval from the bedgraph file. 
+### Data
 
-**Reading loops**\
-Since loops come with a start interval and end interval, we assign an anchor
-within each interval for each loop based on the largest value within the 
-interval. Additionally, each loop is weighted by the anchor intensity of both
-the start and end interval.
+**Chromatin Structure**\
+The chromatin structure is assumed to be a `.hic` file (with normalization="NONE" available) or a `.bedpe` file that is commonly used to store the "loops" of processed ChIA-PET experiments. The toggle between these two files is available as the parameter `use_bedpe` in the `commands.py make-sample-input-file` program. The program bins the chromatin structure data at a specified resolution into an $N \times N$ adjacency matrix with $N$ being the number of nodes, that is the number of bins in a given window. The adjacency matrix $A$ should contain *integer counts* where $A_{ij}$ is the number of inter-ligated fragments captured between binned genomic loci $i$ and $j$. This matrix is symmetric and non-negative and may contain isolated nodes due to centromeres and telomeres. 
 
-**Deadzones**\
-Remove loops that start and end on the same peak. Or if the loop start is 
-somehow past the loop end.
-
-example:\
-loop_start_interval = (0, 10)\
-loop_end_interval = (5, 8)\
-peaks are at index 5 and 9\
-peak value at index 9 > peak value at index 5\
-Therefore, the loop start anchor is at index 9 and the loop end anchor is at index 5.
-
-We create a "deadzone" from 0 to 10 in the chromosome. When creating graphs to 
-compare two chromosomes, we combine the "deadzones" from each chromosome and 
-ignore loops from either chromosome in the combined deadzones. Therefore, the 
-created graph for each chromosome can be different for each comparison.
+**Binding Affinity**\
+The binding affinity data is assumed to be a `.bedgraph` file and represents either the protein enrichment level (e.g. ChIA-PET) or the level of accessibility (e.g. ChIATAC). The program bins the binding affinity data at a specified resolution into an $N$-dimensional vector with $N$ being the number of nodes, that is the number of bins in a given window. This vector $b$ should similarly contain *integer counts* where $b_i$ is the number of captured fragments aligning to binned genomic locus $i$. This vector is non-negative. If the values are not integer counts and contain floating point values between 0 and 1, then it is recommended to multiply the binding affinity values by a large fixed constant, which can be specified via the `ba_mult` parameter. 
 
 ### Preprocessing  
-- Filter out all peaks that are smaller than a certain value: `num_peaks`
-- Find the kept peak ratio from the `base_chrom` and use it for other 
-  chromosomes
-- Filter out loops that are too long (> 1M)
-- Filter out a loop if neither anchor overlaps with a kept peak
+- TODO
     
-### Graph representation and comparison (Not exactly correct)
-- For a non-overlapping window, bin the loops into bins of fixed size
-- Create an adjacency matrix for each window, where index (bin1, bin2) contains 
-  the value from the loops going from bin1 to bin2
-- Convert each adjacency matrix into a probability vector by reading row-by-row
-- Compute the Jensen-Shannon divergence and the Earth Mover's Distance (EMD) \
-  between two probability vectors
-- Transform each value to be between -1 (dissimilar) and 1 (similar)
-- Take the weighted average of values from windows in a chromosome
-- Take the average of values from chromosomes to produce a genome-wide 
-  reproducibility value
+### Graph signal processing comparison
+- TODO
     
 ### Example
-Given two ChIA-PET datasets, create adjacency matrices A1 and A2
+- TODO
 
-**Adjacency matrix A1**   
-
-|         | bin1   | bin2   | bin3   | bin4   |
-|-------- |------  |------  |------  |------  | 
-| bin1    | 3      | 2      | 0      | 1      |
-| bin2    |        | 1      | 5      | 3      |
-| bin3    |        |        | 10     | 9      |
-| bin4    |        |        |        | 20     |
-    
-**Adjacency matrix A2**   
-
-|         | bin1   | bin2   | bin3   | bin4   |
-|-------- |------  |------  |------  |------  | 
-| bin1    | 4      | 5      | 1      | 4      |
-| bin2    |        | 3      | 2      | 3      |
-| bin3    |        |        | 7      | 9      |
-| bin4    |        |        |        | 27     |
-    
-**Probability vectors p_A1 and p_A2**   
-- p_A1 = (0.06, 0.05, 0, 0.02, 0.02, 0.009, 0.06, 0.19, 0.17, 0.37)
-- p_A2 = (0.06, 0.08, 0.02, 0.06, 0.05, 0.03, 0.05, 0.11, 0.14, 0.42)
 
 ## Results
-- ChIA-Rep can clearly distinguish between replicates and non-replicates
-- Generally, replicates have positive values and non-replicates have negative values
-- Can take 0 as a threshold to determine the similarity
+- HiChIA-Rep can clearly distinguish between replicates and non-replicates
+- For a threshold, we recommend (?)
     
 ## Usage 
 ### Dependencies:
+Make a conda environment using `environment.yml`.
 ```
-numpy>=1.17.0
-scipy>=1.3.1
-pybedgraph>=0.5.40
-click>=7.0
+name: hichia-env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - numpy>=2.2,<2.3
+  - scipy>=1.15,<1.16
+  - matplotlib>=3.10,<3.11
+  - click
+  - pybedgraph>=0.5
+  - pybedtools>=0.12
+  - sphinx # Just for building docs
+  - pip
+  - pip:
+      - hic-straw==1.3
 ```
 ### Installation: 
+- TODO
+
 ```bash    
 # Install from github
 git clone https://github.com/c0ver/chia_rep.git    
@@ -97,6 +58,8 @@ pip3 install chia_rep
 ```
 
 ### Create Input files
+- TODO
+
 With `example/sample_list.txt` containing the following:
 ```
 LHH0048H
@@ -124,6 +87,8 @@ python commands.py make-sample-input-file sample_list.txt sample_input_file.txt 
 
     
 ### Run script
+- TODO
+
 Example script is included in `example/script.py`.
 ```bash
 cd example
@@ -134,14 +99,9 @@ python script.py sample_input_file.txt hg38.chrom.sizes pairs.txt 3000000 5000 c
 python script.py sample_input_file.txt hg38.chrom.sizes pairs.txt 3000000 5000 all
 python script.py sample_input_file.txt hg38.chrom.sizes pairs.txt 3000000 5000 chr1 chr2
 ```
-  
-## Testing  
-```bash
-pytest  # Runs the tests in test/
-```
 
 ### Documentation
 Included in docs/build/html
 
 ## Contact
-Contact Minji (minji.kim@jax.org) for general questions, and report software issues in the [Issues](https://github.com/TheJacksonLaboratory/chia_rep/issues) page. 
+Contact Minji (minjilab@umich.edu) for general questions or Sion (sionkim@umich.edu). 

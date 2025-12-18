@@ -1,0 +1,3 @@
+GM12878_rnapii_chiapet_rep1
+GM12878_rnapii_chiapet_rep2
+HEK293T_rnapii_chiapet_rep1

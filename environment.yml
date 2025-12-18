@@ -1,0 +1,15 @@
+name: hichia-env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - numpy>=2.2,<2.3
+  - scipy>=1.15,<1.16
+  - matplotlib>=3.10,<3.11
+  - click
+  - pybedgraph>=0.5
+  - pybedtools>=0.12
+  - sphinx # Just for building docs
+  - pip
+  - pip:
+      - hic-straw==1.3

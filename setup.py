@@ -10,45 +10,51 @@ except ImportError:
 
 ext = 'pyx' if USE_CYTHON else 'c'
 extensions = [
-    Extension('chia_rep.util',
-              [f'chia_rep/util.{ext}']),
+    Extension('hichiarep.util',
+              [f'hichiarep/util.{ext}']),
 ]
 
 if USE_CYTHON:
     from Cython.Build import cythonize
     extensions = cythonize(extensions, language_level=3)
 
-NAME = 'ChIA-Rep'
-VERSION = '3.1.1'
+NAME = 'HiChIA-Rep'
 
 setuptools.setup(
 
     name=NAME,
 
-    version=VERSION,
+    use_scm_version=True,
 
-    author="Henry Zhang",
+    setup_requires=['setuptools_scm'],
 
-    author_email="henrybzhang.99@gmail.com",
+    author="Sion Kim",
 
-    description="A package for measuring reproducibility of ChIA-PET data.",
+    author_email="sionkim@umich.edu",
+
+    description="A package for quantifying the similarity between chromatin interactions data enriched for protein binding sites or open chromatin regions",
 
     long_description=open('README.md').read(),
 
     long_description_content_type="text/markdown",
 
-    url="https://github.com/c0ver/chia_rep",
+    url="https://github.com/minjikimlab/hichiarep",
 
-    packages=['chia_rep'],
+    packages=['hichiarep'],
 
     include_package_data=True,
 
-    install_requires=['numpy>=1.17.0',
-                      'scipy>=1.3.1',
-                      'pybedgraph>=0.5.40',
-                      'click>=7.0'],
+    install_requires=[
+        'numpy>=2.2,<2.3',
+        'scipy>=1.15,<1.16',
+        'matplotlib>=3.10,<3.11',
+        'click',
+        'pybedgraph>=0.5',
+        'pybedtools>=0.12',
+        'hic-straw==1.3',
+    ],
 
-    python_requires='>=3.6',
+    python_requires='>=3.10',
 
     ext_modules=extensions,
 

@@ -1,0 +1,39 @@
+#!/bin/bash
+
+#SBATCH --account=minjilab99
+#SBATCH --partition=standard
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=30g 
+#SBATCH --gpus=0 
+#SBATCH --profile=all
+#SBATCH --time=3:00:00
+#SBATCH --mail-type=END,FAIL
+#SBATCH --output=slurm_out/slurm-%j.out
+
+my_job_header
+
+conda activate hichia-env
+
+# Need for Great Lakes HPC environment (UMICH ONLY)
+export LD_PRELOAD=$CONDA_PREFIX/lib/libstdc++.so.6 
+
+# This command makes the `example_pairs.txt` from `example_sample.txt` 
+python commands.py make-pairs example_sample.txt example_pairs.txt
+
+# This command makes the `example_sample_input_file.txt` from `example_sample.txt` 
+# It will search in the provided directory (only that level) for the appropriate files
+# Specifically, it will do a string match for the text in `example_sample.txt`, so you should name `example_sample.txt` accordingly
+python commands.py make-sample-input-file example_sample.txt example_sample_input_file.txt /nfs/turbo/umms-minjilab/sionkim/chia_rep_simlinks \
+    --use_bedpe False # Recognize Hi-C (.hic) files not .bedpe files 
+
+# This command runs the reproducibility score computation
+python script.py example_sample_input_file.txt hg38.chrom.sizes example_pairs.txt 5000000 10000 all \
+    --window-stride 2 \
+    --do-output-graph False \
+    --output-dir example_output \
+    --normalization NONE \
+    --method random_walk \
+    --mu 5 \
+    --cross False \
+    --num-cores 4 \
+    --compare-method jsd \

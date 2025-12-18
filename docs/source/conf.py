@@ -18,12 +18,17 @@ sys.setrecursionlimit(1500)
 
 # -- Project information -----------------------------------------------------
 
-project = 'ChIA-rep'
-copyright = '2021, Minji Kim, Henry Zhang'
-author = 'Minji Kim, Henry Zhang'
+project = 'HiChIA-rep'
+copyright = '2025, Minji Kim, Sion Kim, Henry Zhang'
+author = 'Minji Kim, Sion Kim, Henry Zhang'
 
 # The full version, including alpha/beta/rc tags
-release = '3.1.0'
+# Dynamic version from setuptools_scm
+try:
+    from importlib.metadata import version as get_version
+    release = get_version("HiChIA-Rep")
+except Exception:
+    release = '0.1.0'
 
 
 # -- General configuration ---------------------------------------------------
