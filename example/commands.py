@@ -43,27 +43,27 @@ def make_sample_input_file(sample_list_file, sample_input_file, sample_data_dir,
         hic_file_path = None
         peak_file_path = None
         for file in os.scandir(sample_data_dir):
-            if file.name.lower().endswith(bg_ext) and sample_name.lower() in file.name.lower():
+            if file.name.endswith(bg_ext) and sample_name.lower() in file.name.lower():
                 bg_file_path = file.path
-            elif (file.name.lower().endswith(chrom_ext1)) and sample_name.lower() in file.name.lower():
+            elif (file.name.endswith(chrom_ext1)) and sample_name.lower() in file.name.lower():
                 hic_file_path = file.path
-            elif use_peaks and file.name.lower().endswith(peak_ext) and sample_name.lower() in file.name.lower():
+            elif use_peaks and file.name.endswith(peak_ext) and sample_name.lower() in file.name.lower():
                 peak_file_path = file.path
 
         # If chrom_ext1 wasn't found after scanning ALL files, scan again for chrom_ext2
         if not hic_file_path:
-            print(f"Couldn't find chromatin structure file {chrom_ext1} for {sample_name}, trying {chrom_ext2}..."
-                  "To disable this behaviour, please do not include this sample in the sample list file.")
+            print(f"Couldn't find chromatin structure file {chrom_ext1} for {sample_name}, searching for {chrom_ext2}... "
+                  "(To disable this behaviour, remove this sample from the sample list file.)")
             for file in os.scandir(sample_data_dir):
-                if (file.name.lower().endswith(chrom_ext2)) and sample_name.lower() in file.name.lower():
+                if (file.name.endswith(chrom_ext2)) and sample_name.lower() in file.name.lower():
                     hic_file_path = file.path
                     break
 
         if not bg_file_path:
-            print(f"Couldn't find binding affinity file {bg_ext} for {sample_name}, trying {bw_ext}..."
-                  "To disable this behaviour, please do not include this sample in the sample list file.")
+            print(f"Couldn't find binding affinity file {bg_ext} for {sample_name}, searching for {bw_ext}... "
+                  "(To disable this behaviour, remove this sample from the sample list file.)")
             for file in os.scandir(sample_data_dir):
-                if (file.name.lower().endswith(bw_ext)) and sample_name.lower() in file.name.lower():
+                if (file.name.endswith(bw_ext)) and sample_name.lower() in file.name.lower():
                     bg_file_path = file.path
                     break
 
