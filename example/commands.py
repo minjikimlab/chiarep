@@ -26,6 +26,7 @@ def make_pairs(sample_list_file, output_pair_file):
 @click.option('-b', '--use_bedpe', default=False, type=bool) # Default is False i.e. default to Hi-C format
 def make_sample_input_file(sample_list_file, sample_input_file, sample_data_dir, use_peaks, use_bedpe):
     bg_ext = '.bedgraph'
+    bw_ext = '.bw'
     if use_bedpe:
         hic_ext = '.bedpe'
     else:
@@ -40,7 +41,7 @@ def make_sample_input_file(sample_list_file, sample_input_file, sample_data_dir,
         hic_file_path = None
         peak_file_path = None
         for file in os.scandir(sample_data_dir):
-            if file.name.lower().endswith(bg_ext) and sample_name.lower() in file.name.lower():
+            if (file.name.lower().endswith(bg_ext) or file.name.lower().endswith(bw_ext)) and sample_name.lower() in file.name.lower():
                 bg_file_path = file.path
             elif (file.name.lower().endswith(hic_ext)) and sample_name.lower() in file.name.lower():
                 hic_file_path = file.path
