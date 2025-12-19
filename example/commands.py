@@ -28,9 +28,11 @@ def make_sample_input_file(sample_list_file, sample_input_file, sample_data_dir,
     bg_ext = '.bedgraph'
     bw_ext = '.bw'
     if use_bedpe:
-        hic_ext = '.bedpe'
+        chrom_ext1 = '.bedpe'
+        chrom_ext2 = '.hic' # takes less precedence
     else:
-        hic_ext = '.hic'
+        chrom_ext1 = '.hic'
+        chrom_ext2 = '.bedpe' # takes less precedence
     peak_ext = '.bed'
 
     for sample_name in sample_list_file:
@@ -43,10 +45,19 @@ def make_sample_input_file(sample_list_file, sample_input_file, sample_data_dir,
         for file in os.scandir(sample_data_dir):
             if (file.name.lower().endswith(bg_ext) or file.name.lower().endswith(bw_ext)) and sample_name.lower() in file.name.lower():
                 bg_file_path = file.path
-            elif (file.name.lower().endswith(hic_ext)) and sample_name.lower() in file.name.lower():
+            elif (file.name.lower().endswith(chrom_ext1)) and sample_name.lower() in file.name.lower():
                 hic_file_path = file.path
             elif use_peaks and file.name.lower().endswith(peak_ext) and sample_name.lower() in file.name.lower():
                 peak_file_path = file.path
+
+        # If chrom_ext1 wasn't found after scanning ALL files, scan again for chrom_ext2
+        if not hic_file_path:
+            print(f"Couldn't find chromatin structure file {chrom_ext1} for {sample_name}, trying {chrom_ext2}..."
+                  "To disable this behaviour, please do not include this sample in the sample list file.")
+            for file in os.scandir(sample_data_dir):
+                if (file.name.lower().endswith(chrom_ext2)) and sample_name.lower() in file.name.lower():
+                    hic_file_path = file.path
+                    break
 
         if not bg_file_path or not hic_file_path:
             print(f'Missing files for {sample_name}. Skipping.')
