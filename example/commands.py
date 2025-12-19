@@ -26,7 +26,7 @@ def make_pairs(sample_list_file, output_pair_file):
 @click.option('-b', '--use_bedpe', default=False, type=bool) # Default is False i.e. default to Hi-C format
 def make_sample_input_file(sample_list_file, sample_input_file, sample_data_dir, use_peaks, use_bedpe):
     bg_ext = '.bedgraph'
-    bw_ext = '.bw'
+    bw_ext = '.bigWig'
     if use_bedpe:
         chrom_ext1 = '.bedpe'
         chrom_ext2 = '.hic' # takes less precedence
