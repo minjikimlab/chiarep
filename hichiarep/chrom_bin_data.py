@@ -358,12 +358,18 @@ def subsample(A1 : np.ndarray, A2 : np.ndarray, B1 : np.ndarray, B2: np.ndarray,
 
 def _random_walk_gsp_worker(args):
     """ Computes random walk GSP """
-    A1, x1, A2, x2, p, compare_method, cross, skip_window, ssp = args
+    A1, x1, A2, x2, p, compare_method, cross, ssp = args
 
     if ssp is not None:
         A1 = A1.toarray()
         A2 = A2.toarray()
         A1, A2, x1, x2 = subsample(A1, A2, x1, x2, p=ssp)
+
+    # Compute skip window here
+    N = x1.shape[0]
+    node_sparse_1 = (np.sum(x1 < 1) / N) > 0.5
+    node_sparse_2 = (np.sum(x2 < 1) / N) > 0.5
+    skip_window = node_sparse_1 | node_sparse_2
     
     sum_x1 = np.sum(x1)
     sum_x2 = np.sum(x2)
@@ -511,12 +517,18 @@ def construct_diffusion_kernel(L, t):
 
 def _diffusion_gsp_worker(args):
     """ Computes diffusion GSP """
-    A1, x1, A2, x2, t, compare_method, cross, skip_window, ssp = args
+    A1, x1, A2, x2, t, compare_method, cross, ssp = args
 
     if ssp is not None:
         A1 = A1.toarray()
         A2 = A2.toarray()
         A1, A2, x1, x2 = subsample(A1, A2, x1, x2, p=ssp)
+
+    # Compute skip window here
+    N = x1.shape[0]
+    node_sparse_1 = (np.sum(x1 < 1) / N) > 0.5
+    node_sparse_2 = (np.sum(x2 < 1) / N) > 0.5
+    skip_window = node_sparse_1 | node_sparse_2
     
     sum_x1 = np.sum(x1)
     sum_x2 = np.sum(x2)
@@ -1112,12 +1124,12 @@ class ChromBinData:
 
         # BA is not yet normalized, so we deem BA to be "0" if count is less than 1
         # If more than 50% of the nodes in the window are "0", we skip the window
-        node_sparse_1 = (np.sum(weights1 < 1, axis=1) / N) > 0.5
-        node_sparse_2 = (np.sum(weights2 < 1, axis=1) / N) > 0.5
-        skip_window = node_sparse_1 | node_sparse_2
+        # node_sparse_1 = (np.sum(weights1 < 1, axis=1) / N) > 0.5
+        # node_sparse_2 = (np.sum(weights2 < 1, axis=1) / N) > 0.5
+        # skip_window = node_sparse_1 | node_sparse_2
 
         tasks = [
-            (adj_list1[i], weights1[i].copy(), adj_list2[i], weights2[i].copy(), mu, compare_method, cross, skip_window[i], ssp)
+            (adj_list1[i], weights1[i].copy(), adj_list2[i], weights2[i].copy(), mu, compare_method, cross, ssp)
             for i in range(M)
         ]
 
